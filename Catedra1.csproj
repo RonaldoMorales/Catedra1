@@ -22,12 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\" />
     <Folder Include="src\Controllers\" />
     <Folder Include="src\Data\" />
     <Folder Include="src\Dtos\" />
     <Folder Include="src\Interfaces\" />
-    <Folder Include="src\Models\" />
     <Folder Include="src\Repositories\" />
   </ItemGroup>
 
