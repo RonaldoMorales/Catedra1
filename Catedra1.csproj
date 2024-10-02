@@ -25,7 +25,6 @@
     <Folder Include="src\Controllers\" />
     <Folder Include="src\Data\" />
     <Folder Include="src\Dtos\" />
-    <Folder Include="src\Interfaces\" />
     <Folder Include="src\Repositories\" />
   </ItemGroup>
 
