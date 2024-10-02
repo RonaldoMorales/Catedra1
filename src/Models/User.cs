@@ -1,10 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Catedra1.src.Models;
 
 public class User
 {
+    [Key]
     public string Rut { get; set; } = string.Empty;
 
     [StringLength(100,MinimumLength =3, ErrorMessage = "El nombre debe tener entre 3 y 100 caracteres")]
