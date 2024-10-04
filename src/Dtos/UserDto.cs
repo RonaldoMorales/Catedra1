@@ -1,15 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
-namespace Catedra1.src.Models;
+namespace Catedra1.src.Dtos;
 
-public class User
-{
-    //Estructura del unico modelo de la catedra
+public class UserDto
+{   
 
-    public int Id { get; set; }
-
+    //Es lo mismo que user, solo que sin ID
     [Required]
     public string Rut { get; set; } = string.Empty;
 
@@ -28,5 +25,5 @@ public class User
     [Required]
 
     public DateOnly FechaNacimiento { get; set; } = new DateOnly();
-    
+
 }

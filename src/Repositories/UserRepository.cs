@@ -1,8 +1,10 @@
 using System;
 using Catedra1.src.Data;
+using Catedra1.src.Dtos;
 using Catedra1.src.Interfaces;
 using Catedra1.src.Models;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Catedra1.src.Repositories;
 
@@ -15,11 +17,22 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<User> CreateUserAsync(User user)
+    public async Task<User> CreateUser(UserDto user)
     {
-        _context.Users.Add(user);
+
+        i
+        var NuevoUser = new User
+            {
+                Rut = user.Rut,
+                Nombre = user.Nombre,
+                Email = user.Email,
+                Genero = user.Genero,
+                FechaNacimiento = user.FechaNacimiento
+            };
+
+        await _context.Users.AddAsync(NuevoUser);
         await _context.SaveChangesAsync();
-        return user;
+        return NuevoUser;
     }
 
     public async Task<User> DeleteUserAsync(string rut)
@@ -32,6 +45,11 @@ public class UserRepository : IUserRepository
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
         return user;
+    }
+
+    public Task DeleteUserAsync(int id)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<User> GetUserAsync(string rut)
