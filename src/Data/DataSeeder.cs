@@ -34,9 +34,9 @@ public class DataSeeder
             new User
             {
                 Rut = "34567890-1",
-                Nombre = "Neymar Junior",
-                Email = "neymar.junior@alhilal.com",
-                Genero = "masculino",
+                Nombre = "Martha Diaz",
+                Email = "Martha.Diaz@alhilal.com",
+                Genero = "femenino",
                 FechaNacimiento = new DateOnly(1992, 2, 5)
             },
 

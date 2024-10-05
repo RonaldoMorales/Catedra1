@@ -38,8 +38,10 @@ public class UserController : ControllerBase
         if(gender!= null){
 
 
-            if(gender != "masculino" || gender!= "femenino" || gender != "otro" || gender != "prefiero no decirlo")
-                return BadRequest("Los generos disponibles son 'masculino', 'femenino', 'otro' o 'prefiero no decirlo'");
+            var generos =   new List<string> { "masculino", "femenino", "otro", "prefiero no decirlo" };
+
+            if(!generos.Contains(gender))
+                return BadRequest("El genero debe ser 'masculino', 'femenino', 'otro' o 'prefiero no decirlo'");
                 
             users = users.Where(u => u.Genero == gender);
         }
