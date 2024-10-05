@@ -4,6 +4,7 @@ using Catedra1.src.Dtos;
 using Catedra1.src.Interfaces;
 using Catedra1.src.Models;
 using Microsoft.AspNetCore.Mvc;
+using SQLitePCL;
 
 namespace Catedra1.src.Controllers;
 
@@ -53,11 +54,12 @@ public class UserController : ControllerBase
 
     [HttpPost] //CREAR UN NUEVO USUARIO
 
-    public async Task<IActionResult> CrearUsuario(UserDto user)
+    public async Task<IActionResult> CrearUsuario([FromBody] UserDto user)
     {
         try
         {
             var NuevoUser = await _userRepository.CrearUsuario(user);
+            
             return CreatedAtAction(nameof(CrearUsuario), new { id = NuevoUser.Id }, NuevoUser);
         }
         catch (Exception e)
@@ -73,6 +75,28 @@ public class UserController : ControllerBase
         {
             await _userRepository.DeleteUser(Id);
             return Ok("Usuario eliminado");
+        }
+        else
+        {
+            return NotFound("Usuario no encontrado");
+        }
+    }
+
+    [HttpPut("{Id}")] //ACTUALIZAR UN USUARIO POR ID
+
+    public async Task<IActionResult> UpdateUser(int Id, UserDto user)
+    {
+        if(await _userRepository.UserExistsId(Id))
+        {
+            try
+            {
+                var userUpdated = await _userRepository.UpdateUser(Id, user);
+                return Ok(userUpdated);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
         else
         {
