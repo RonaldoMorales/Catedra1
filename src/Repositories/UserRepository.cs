@@ -89,6 +89,11 @@ public class UserRepository : IUserRepository
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> UserExistsId(int Id)
+        {
+            return await _context.Users.AnyAsync(u => u.Id == Id);
+        }
+
 
 
 }

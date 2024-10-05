@@ -69,14 +69,14 @@ public class UserController : ControllerBase
     [HttpDelete("{Id}")] //ELIMINAR UN USUARIO POR ID
     public async Task<IActionResult> DeleteUser(int Id)
     {
-        try
+        if(await _userRepository.UserExistsId(Id))
         {
             await _userRepository.DeleteUser(Id);
-            return Ok();
+            return Ok("Usuario eliminado");
         }
-        catch (Exception e)
+        else
         {
-            return BadRequest(e.Message);
+            return NotFound("Usuario no encontrado");
         }
     }
 

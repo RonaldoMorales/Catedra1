@@ -11,7 +11,8 @@ public interface IUserRepository
     Task<User> UpdateUser(int Id, UserDto user); // PUT, ACTUALIZA A LOS USUARIOS MEDIANTE ID
     Task DeleteUser(int Id); // DELETE, ELIMINA A UN USUARIO POR ID
 
-    Task<bool> UserExists(string rut); // VERIFICA SI EXISTE UN USUARIO
+    Task<bool> UserExists(string rut); // VERIFICA SI EXISTE UN USUARIO por RUT
 
+    Task<bool> UserExistsId(int Id); // VERIFICA SI EXISTE UN USUARIO por ID
 
 }
