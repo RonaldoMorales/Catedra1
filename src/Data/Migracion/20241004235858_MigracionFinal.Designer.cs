@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Catedra1.src.Data.Migracion
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241002234840_MigracionUno")]
-    partial class MigracionUno
+    [Migration("20241004235858_MigracionFinal")]
+    partial class MigracionFinal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,14 +22,15 @@ namespace Catedra1.src.Data.Migracion
 
             modelBuilder.Entity("Catedra1.src.Models.User", b =>
                 {
-                    b.Property<string>("Rut")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("FechaNacimiento")
+                    b.Property<DateOnly>("FechaNacimiento")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Genero")
@@ -41,7 +42,11 @@ namespace Catedra1.src.Data.Migracion
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Rut");
+                    b.Property<string>("Rut")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });

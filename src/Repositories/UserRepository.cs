@@ -17,10 +17,14 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<User> CreateUser(UserDto user)
+    public async Task<User> CrearUsuario(UserDto user)
     {
 
-        i
+        if(UserExists(user.Rut).Result)
+        {
+            throw new Exception("El usuario ya existe");
+        }
+        
         var NuevoUser = new User
             {
                 Rut = user.Rut,
@@ -35,38 +39,56 @@ public class UserRepository : IUserRepository
         return NuevoUser;
     }
 
-    public async Task<User> DeleteUserAsync(string rut)
-    {
-        var user = await _context.Users.FindAsync(rut);
-        if (user == null)
+     public async Task<bool> UserExists(string rut)
         {
-            return null;
+            return await _context.Users.AnyAsync(u => u.Rut == rut);
         }
-        _context.Users.Remove(user);
-        await _context.SaveChangesAsync();
-        return user;
-    }
 
-    public Task DeleteUserAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
 
-    public async Task<User> GetUserAsync(string rut)
-    {
-        return await _context.Users.FindAsync(rut);
-    }
 
-    public async Task<IEnumerable<User>> GetUsersAsync()
-    {
-        return await _context.Users.ToListAsync();
-    }
+       public async Task<IEnumerable<UserDto>> GetUsuarios()
+        {
+            var users = await _context.Users.ToListAsync();
+            return users.Select(u => new UserDto
+            {
+                Rut = u.Rut,
+                Nombre = u.Nombre,
+                Email = u.Email,
+                Genero = u.Genero,
+                FechaNacimiento = u.FechaNacimiento
+            });
+        }
 
-    public async Task<User> UpdateUserAsync(User user)
-    {
-        _context.Entry(user).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-        return user;
-    }
+        public async Task<User> UpdateUser(int Id, UserDto user)
+        {
+            var userToUpdate = await _context.Users.FindAsync(Id);
+            if (userToUpdate == null)
+            {
+                throw new Exception("El usuario no existe");
+            }
+
+            userToUpdate.Rut = user.Rut;
+            userToUpdate.Nombre = user.Nombre;
+            userToUpdate.Email = user.Email;
+            userToUpdate.Genero = user.Genero;
+            userToUpdate.FechaNacimiento = user.FechaNacimiento;
+
+            await _context.SaveChangesAsync();
+            return userToUpdate;
+        }
+
+        public async Task DeleteUser(int Id)
+        {
+            var userToDelete = await _context.Users.FindAsync(Id);
+            if (userToDelete == null)
+            {
+                throw new Exception("El usuario no existe");
+            }
+
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync();
+        }
+
+
 
 }

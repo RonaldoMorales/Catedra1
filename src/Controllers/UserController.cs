@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Catedra1.src.Interfaces;
 using Catedra1.src.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,51 +18,39 @@ public class UserController : ControllerBase
         _userRepository = userRepository;
     }
 
-    [HttpGet] //OBTENER TODOS LOS USUARIOS
+    [HttpGet] //OBTENER TODOS LOS USUARIOS, CON LA OPCION DE APLICAR FILTROS
 
-    public async Task<IActionResult> GetUsersAsync()
-    {
-        var users = await _userRepository.GetUsersAsync();
+    public async Task<IActionResult> GetUsuarios([FromQuery] string? sort = null, [FromQuery] string? gender = null){
+        var users = await _userRepository.GetUsuarios();
+
+        if(sort != null)
+        {       
+            if(sort == "asc")
+                users = users.OrderBy(u => u.Nombre);
+                
+
+            else if(sort == "desc")
+                users = users.OrderByDescending(u => u.Nombre);
+            else 
+                return BadRequest("El parametro sort debe ser 'asc' o 'desc'");
+        }
+
+        if(gender!= null){
+
+
+            if(gender != "masculino" || gender!= "femenino" || gender != "otro" || gender != "prefiero no decirlo")
+                return BadRequest("Los generos disponibles son 'masculino', 'femenino', 'otro' o 'prefiero no decirlo'");
+                
+            users = users.Where(u => u.Genero == gender);
+        }
+
+
         return Ok(users);
     }
 
-    [HttpPost] //CREAR USUARIO
-
-    public async Task<IActionResult> CreateUserAsync([FromBody] User user)
-    {
-        var newUser = await _userRepository.CreateUserAsync(user);
-        return CreatedAtAction(nameof(GetUsersAsync), new {rut = newUser.Rut}, newUser);
-    }
-
-    [HttpDelete("{id}")] //ELIMINAR USUARIO
-
-    public async Task<IActionResult> DeleteUserAsync(int id)
-    {
-        await _userRepository.DeleteUserAsync(id);
-        return NoContent();
-    }
-
-    [HttpPut("{id}")] //ACTUALIZAR USUARIO
-
-    public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] User user)
-    {
-        if (id != user.Id)
-        {
-            return BadRequest();
-        }
-        await _userRepository.UpdateUserAsync(user);
-        return NoContent();
-    }
-
-    
-
-    
-
-    
-
     
     
-   
+
 
 
 
