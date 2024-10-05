@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using Catedra1.src.Dtos;
 using Catedra1.src.Interfaces;
 using Catedra1.src.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,40 @@ public class UserController : ControllerBase
 
         return Ok(users);
     }
+
+    [HttpPost] //CREAR UN NUEVO USUARIO
+
+    public async Task<IActionResult> CrearUsuario(UserDto user)
+    {
+        try
+        {
+            var NuevoUser = await _userRepository.CrearUsuario(user);
+            return CreatedAtAction(nameof(CrearUsuario), new { id = NuevoUser.Id }, NuevoUser);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpDelete("{Id}")] //ELIMINAR UN USUARIO POR ID
+    public async Task<IActionResult> DeleteUser(int Id)
+    {
+        try
+        {
+            await _userRepository.DeleteUser(Id);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+
+
+
+
 
     
     
